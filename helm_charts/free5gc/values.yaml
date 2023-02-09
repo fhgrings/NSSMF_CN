@@ -1,0 +1,107 @@
+deployAMF: true
+deployAUSF: true
+deployMongoDB: true
+deployN3IWF: true
+deployNRF: true
+deployNSSF: true
+deployPCF: true
+deploySMF: true
+deployUDM: true
+deployUDR: true
+deployUPF: true
+deployWEBUI: true
+free5gc-nrf:
+  db:
+    enabled: false
+global:
+  amf:
+    nodeSelector: null
+    service:
+      n2:
+        name: amf-service
+        port: 8805
+        protocol: UDP
+        targetport: 8805
+        type: ClusterIP
+      name: amf-n2
+      port: 38412
+      protocol: SCTP
+      targetport: 31412
+      type: NodePort
+  ausf:
+    nodeSelector: null
+  n3iwf:
+    nodeSelector: null
+    service:
+      n3:
+        name: n3iwf-n3
+        port: 8805
+        protocol: UDP
+        targetport: 8805
+        type: ClusterIP
+      nwu:
+        name: n3iwf-nwu
+        nodePort: 31500
+        port: 500
+        protocol: UDP
+        targetport: 500
+        type: NodePort
+  name: free5gc
+  nrf:
+    nodeSelector: null
+    service:
+      name: nrf-nnrf
+      nodePort: '30800'
+      port: 8080
+      type: ClusterIP
+  nssf:
+    nodeSelector: null
+  pcf:
+    nodeSelector: null
+  sbi:
+    scheme: http
+  smf:
+    nodeSelector: null
+    service:
+      n4:
+        name: smf-n4
+        port: 8805
+        protocol: UDP
+        targetport: 8805
+        type: ClusterIP
+  udm:
+    nodeSelector: null
+  udr:
+    nodeSelector: null
+  upf:
+    nodeSelector: null
+    service:
+      n3:
+        name: upf-n3
+        port: 8805
+        protocol: UDP
+        targetport: 8805
+        type: ClusterIP
+      n4:
+        name: upf-service
+        port: 8805
+        protocol: UDP
+        targetport: 8805
+        type: ClusterIP
+  userPlaneArchitecture: single
+  webui:
+    nodeSelector: null
+mongodb:
+  auth:
+    enabled: false
+  fullnameOverride: mongodb
+  nodeSelector: null
+  persistence:
+    mountPath: /bitnami/mongodb/data/db/
+    size: 6Gi
+  service:
+    name: mongodb
+    nodePort: '30017'
+    port: 27017
+    type: ClusterIP
+  useStatefulSet: true
