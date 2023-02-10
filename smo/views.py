@@ -1,5 +1,7 @@
 from flask import request, jsonify
 import json
+from src.services.ControllerKeyService import ControllerKeyService
+
 
 def configure(app):
 
@@ -7,16 +9,18 @@ def configure(app):
     def alive():
         return "Alive"
 
-    @app.route("/condutor/info/")
+    @app.route("/controllerKey/", methods=['GET'])
     def getInfoCondutor():
-        condutorService = CondutorService()
-        print(condutorService.getInformacoesCondutor())
-        return "ok"
-
-    # @app.route("/condutor/get/", methods=['GET'])
-    # def getCondutor():
-    #     try:
-    #         condutorService = CondutorService()
-    #         return condutorService.getCondutor(request)
-    #     except Exception as e:
-    #         return str(e), 500
+        try:
+            controller = ControllerKeyService()
+            return controller.getControllerKey(request)
+        except Exception as e:
+            return str(e), 500
+            
+    @app.route("/controllerKey/", methods=['POST'])
+    def getCondutor():
+        try:
+            controller = ControllerKeyService()
+            return controller.createControllerKey(request)
+        except Exception as e:
+            return str(e), 500

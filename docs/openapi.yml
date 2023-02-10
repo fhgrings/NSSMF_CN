@@ -43,32 +43,6 @@ tags:
 
 paths:
   /nsst:
-    put:
-      tags:
-        - NSST
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: updatePet
-      requestBody:
-        description: Update an existent pet in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Pet'          
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'          
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
     delete:
       tags:
         - NSST
@@ -81,7 +55,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
+                type: object
+                example: {request_status: "ok", NSST_id: 123}
         '400':
           description: Invalid ID supplied
         '404':
@@ -95,19 +70,22 @@ paths:
       description: Update an existing pet by Id
       operationId: postNsst
       requestBody:
-        description: Update an existent pet in the store
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Pet'          
-        required: true
+              type: object
+              example:
+                {
+                  
+                }
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
+                type: string
+                example: {request_status: ok, NSST_id: 1}
         '400':
           description: Invalid ID supplied
         '404':
@@ -126,7 +104,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
+                type: object
+                example:
+                  services:
+                    - amf
+                    - smf
+                    - upf
+                    - nrf
+                  instances:
+                    - mongo
+                    - amf
+                    - smf
+                    - upf
+                    - nrf
+                  NSST_id: 123
+                
         '400':
           description: Invalid ID supplied
         '404':
@@ -135,32 +127,6 @@ paths:
           description: Validation exception
 
   /nssi:
-    put:
-      tags:
-        - NSSI
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: putNSSI
-      requestBody:
-        description: Update an existent pet in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Pet'          
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'          
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
     delete:
       tags:
         - NSSI
@@ -173,7 +139,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
+                $ref: '#/components/schemas/NSST'          
         '400':
           description: Invalid ID supplied
         '404':
@@ -183,15 +149,23 @@ paths:
     post:
       tags:
         - NSSI
-      summary: Update an existing pet
-      description: Update an existing pet by Id
+      summary: Create a NSSI
+      description: Create a NSSI
       operationId: postNSSI
       requestBody:
-        description: Update an existent pet in the store
+        description: NSSI selection
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'          
+              type: object
+              example:
+                {
+                  s-nssai: {
+                    sd: 123,
+                    sst: 1234
+                  },
+                  NSST_id: 123
+                }
         required: true
       responses:
         '200':
@@ -199,7 +173,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
+                type: object
+                example:
+                  {
+                    NSSI_id: 222
+                  }
         '400':
           description: Invalid ID supplied
         '404':
@@ -212,13 +190,30 @@ paths:
       summary: Update an existing pet
       description: Update an existing pet by Id
       operationId: getNSSI
+      parameters:
+        - in: query
+          name: fields
+          allowReserved: true
+          schema:
+            type: integer
+            example: 222
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
+                type: object
+                example:
+                  {
+                    status: "creating",
+                    instances: ["AMF", "SMF", "UPF"],
+                    interfaces: {
+                      port: 34080,
+                      ip: "127.0.0.1"
+                    }
+                    
+                  }
         '400':
           description: Invalid ID supplied
         '404':
@@ -227,45 +222,27 @@ paths:
           description: Validation exception
      
   /controllerKey:
-    put:
-      tags:
-        - Controller Key
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: putControllerKey
-      requestBody:
-        description: Update an existent pet in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Pet'          
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'          
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
     delete:
       tags:
         - Controller Key
-      summary: Update an existing pet
-      description: Update an existing pet by Id
+      summary: Delete a Kubernetes Acces Key
+      description: Delete a Kubernetes Acces Key
       operationId: deleteControllerKey
+      parameters:
+        - in: query
+          name: fields
+          allowReserved: true
+          schema:
+            type: integer
+            example: 123
+
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
+                $ref: '#/components/schemas/NSST'          
         '400':
           description: Invalid ID supplied
         '404':
@@ -275,15 +252,15 @@ paths:
     post:
       tags:
         - Controller Key
-      summary: Update an existing pet
-      description: Update an existing pet by Id
+      summary: Update a Kubernetes Acces Key
+      description: Update a Kubernetes Acces Key
       operationId: postControllerKey
       requestBody:
-        description: Update an existent pet in the store
+        description: Update a Kubernetes Acces Key
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'          
+              $ref: '#/components/schemas/kube_config'          
         required: true
       responses:
         '200':
@@ -291,7 +268,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
+                $ref: '#/components/schemas/kube_config'          
         '400':
           description: Invalid ID supplied
         '404':
@@ -301,16 +278,23 @@ paths:
     get:
       tags:
         - Controller Key
-      summary: Update an existing pet
-      description: Update an existing pet by Id
+      summary: Get a Kubernetes Acces Key
+      description: Get a Kubernetes Acces Key
       operationId: getControllerKey
+      parameters:
+        - in: query
+          name: fields
+          allowReserved: true
+          schema:
+            type: integer
+            example: 123
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
+                $ref: '#/components/schemas/kube_config'          
         '400':
           description: Invalid ID supplied
         '404':
@@ -320,33 +304,68 @@ paths:
  
 components:
   schemas:
-    Pet:
-      required:
-        - name
-        - photoUrls
+    kube_config:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        name:
+        apiVersion:
           type: string
-          example: doggi
-        photoUrls:
-          type: array
-          xml:
-            wrapped: true
-          items:
-            type: string
-            xml:
-              name: photoUrl
-        status:
+          example: v1
+        clusters:
+          type: object
+          properties:
+            cluster:
+              type: object
+              properties:
+                certificate-authority-data:
+                  type: string
+                  example: LS0tLS1CRUdJTiBDRVJUSUZJQ
+                server:
+                  type: string
+                  example: https://127.0.0.1:36035
+            name:
+              type: string
+              example: kind-kind
+        contexts:
+          type: object
+          properties:
+            context:
+              type: object
+              properties:
+                cluster:
+                  type: string
+                  example: kind-kind
+                user:
+                  type: string
+                  example: kind-kind
+            name:
+              type: string
+              example: kind-kind
+        current-context: 
           type: string
-          description: pet status in the store
-          enum:
-            - available
-            - pending
-            - sold
-
-    
+          example: kind-kind
+        kind:
+          type: string
+          example: Config
+        users:
+          type: object
+          properties:
+            user:
+              type: object
+              properties:
+                client-certificate-data:
+                  type: string
+                  example: LS0tLS1CRUdJTiBDRVJUSUZJQ
+                client-key-data:
+                  type: string
+                  example: LS0tLS1CRUdJTi
+            name:
+              type: string
+              example: kind-kind
+    NSST:
+      type: object
+      example:
+        {
+          services: [amf, smf, upf, nrf],
+          instances: [mongo, amf, smf, upf, nrf],
+          NSST_id: 123,
+        }
